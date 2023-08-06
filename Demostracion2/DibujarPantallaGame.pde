@@ -26,7 +26,7 @@ PImage[] imgPer = new PImage[5];
 void CargarImagenesPersonaje(){
   imgPer[0] = loadImage("./img/Aper01.png");
   imgPer[1] = loadImage("./img/Aper02CamIzq.png");
-  imgPer[2] = loadImage("./img/Aper03CamIzq.png");
+  imgPer[2] = loadImage("./img/Aper04CamIzq.png");
   imgPer[3] = loadImage("./img/Aper04SaltarSube.png");
   imgPer[4] = loadImage("./img/Aper04SaltarBaja.png");
 }
@@ -149,10 +149,8 @@ void dibujarPantallaGame(){
         flipImageH(imgPer[2],xPersonaje, yPersonaje, sentido);
       }
     }      
-  }
-    
-    scale(1,1);
- 
+  }  
+
   // Coloca texto en la pantalla
   // Publico las variables del personaje
   fill(0);
