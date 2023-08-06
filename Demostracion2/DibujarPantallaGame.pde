@@ -134,31 +134,23 @@ void dibujarPantallaGame(){
   // Animación del personaje mediante las imágenes
   if (estaSaltando){
     if (VyPersonaje < 0) {
-      //image(imgPer[3],xPersonaje, yPersonaje);
       flipImageH(imgPer[3],xPersonaje, yPersonaje, sentido);
     } else {
-      //image(imgPer[4],xPersonaje, yPersonaje);
       flipImageH(imgPer[4],xPersonaje, yPersonaje, sentido);
     }        
   } else{
     if (VxPersonaje == 0) {
-      //image(imgPer[0],xPersonaje, yPersonaje);    
       flipImageH(imgPer[0],xPersonaje, yPersonaje, sentido);
     } else {
       // Calcula el paso alternado
       if (txPersonaje % 4 == 0){
-        if (alternarPaso == 0) {
-          alternarPaso = 1;
-        } else {
-          alternarPaso = 0;
-        }
+        alternarPaso++;
+        alternarPaso = alternarPaso % 2;
       }
       // Dibuja la imagen que le toca
       if (alternarPaso == 0){
-        //image(imgPer[1],xPersonaje, yPersonaje);
         flipImageH(imgPer[1],xPersonaje, yPersonaje, sentido);
       } else {
-        //image(imgPer[2],xPersonaje, yPersonaje);
         flipImageH(imgPer[2],xPersonaje, yPersonaje, sentido);
       }
     }      
