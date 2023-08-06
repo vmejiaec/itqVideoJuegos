@@ -4,6 +4,7 @@ char estado = 'r';  // Estados: g, r, e
 void setup(){
   size(900,700);
   setupPersonaje();
+  CargarImagenesPersonaje();
 }
 
 void draw(){

@@ -21,6 +21,16 @@ float VxPersonaje = 0;
 float VxiPersonaje = 5;
 boolean esEmpujado = false;
 
+PImage[] imgPer = new PImage[5];
+
+void CargarImagenesPersonaje(){
+  imgPer[0] = loadImage("./img/Aper01.png");
+  imgPer[1] = loadImage("./img/Aper02CamIzq.png");
+  imgPer[2] = loadImage("./img/Aper03CamIzq.png");
+  imgPer[3] = loadImage("./img/Aper04SaltarSube.png");
+  imgPer[4] = loadImage("./img/Aper04SaltarBaja.png");
+}
+
 void setupPersonaje(){
   yiPersonaje = height - 40 - alturaPersonaje;
   yPersonaje = yiPersonaje;  
@@ -64,7 +74,7 @@ void dibujarPantallaGame(){
     // Cálculo del tiempo para animar el salto
     tPersonaje = tPersonaje + 1;
     // Cálculo de la posición vertical durante el salto
-    VyPesonaje = VyiPersonaje + AyPersonaje*tPersonaje;
+    VyPersonaje = VyiPersonaje + AyPersonaje*tPersonaje;
     yPersonaje = yiPersonaje + VyiPersonaje * tPersonaje + 0.5*AyPersonaje*tPersonaje*tPersonaje;
     // Controla cuando el personaje vuelve al suelo y termina el salto
     if (yPersonaje > height -40-alturaPersonaje) {
@@ -88,27 +98,83 @@ void dibujarPantallaGame(){
   
   // Control de choque con la pared izquierda
   if (xPersonaje + anchoPersonaje > width){
+    // Cambia la dirección horizontal
     VxPersonaje = - VxPersonaje;
-    if (VyPersonaje > 0){
-      VyiPersonaje = - VyiPersonaje;
-    }
-    //VyiPersonaje = VyiPersonaje +  0.05 * VyiPersonaje;
     xiPersonaje = width - anchoPersonaje;
     txPersonaje = 0;
+    // Aumenta la velocidad vertical
+    if (VyPersonaje < 0){
+      VyiPersonaje = 1.2*VyiPersonaje;
+    }
   }
   // Control de choque con la pared derecha
   if (xPersonaje < 0){
+    // cambia la dirección horizontal del personaje
     VxPersonaje = - VxPersonaje;
-    if (VyPersonaje > 0){
-      VyiPersonaje = - VyiPersonaje;
-    }
-    //VyiPersonaje = VyiPersonaje +  0.01 * VyiPersonaje;
     xiPersonaje = 0;
     txPersonaje = 0;
+    // Aumenta la velocidad vertical
+    if (VyPersonaje < 0){
+      VyiPersonaje = 1.2*VyiPersonaje;
+    }
   }
   
   // Dibujar el personaje
-  rect(xPersonaje, yPersonaje, anchoPersonaje, alturaPersonaje);
+  //rect(xPersonaje, yPersonaje, anchoPersonaje, alturaPersonaje);
   
-  text("Pulsar la tecla 'e' para salir del videojuego",100,100);
+  char sentido = 'i';  // por defecto a la izquierda
+  
+  if (VxPersonaje > 0) {
+    sentido = 'd';
+  } 
+   
+  if (estaSaltando){
+    if (VyPersonaje < 0) {
+      //image(imgPer[3],xPersonaje, yPersonaje);
+      flipImageH(imgPer[3],xPersonaje, yPersonaje, sentido);
+    } else {
+      //image(imgPer[4],xPersonaje, yPersonaje);
+      flipImageH(imgPer[4],xPersonaje, yPersonaje, sentido);
+    }        
+  } else{
+    if (VxPersonaje == 0) {
+      //image(imgPer[0],xPersonaje, yPersonaje);    
+      flipImageH(imgPer[0],xPersonaje, yPersonaje, sentido);
+    } else {
+      if (txPersonaje % 4 == 0){
+        //image(imgPer[1],xPersonaje, yPersonaje);
+        flipImageH(imgPer[1],xPersonaje, yPersonaje, sentido);
+      } else {
+        //image(imgPer[2],xPersonaje, yPersonaje);
+        flipImageH(imgPer[2],xPersonaje, yPersonaje, sentido);
+      }
+    }      
+  }
+    
+    scale(1,1);
+ 
+  // Coloca texto en la pantalla
+  // Publico las variables del personaje
+  fill(0);
+  textSize(20);
+  text("yP: "+yPersonaje, 100,100);
+  text("VyP: "+VyPersonaje, 100,140);
+  text("VyiP: "+VyiPersonaje, 100,180);
+  // Menú del juego
+  fill(155);
+  textSize(30);
+  text("Pulsar la tecla 'e' para salir del videojuego",width/2-100,height -12);
+  fill(255);
+}
+
+void flipImageH(PImage img, float X, float Y, int sentido) {
+  // sentido = 'd' derecha, sentido = 'i' izquierda
+  pushMatrix();
+  if (sentido == 'i'){
+    image(img, X, Y);
+  } else {
+    scale(-1, 1);
+    image(img, -X- img.width, Y);
+  }
+  popMatrix();
 }
