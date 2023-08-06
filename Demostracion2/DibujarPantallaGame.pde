@@ -9,6 +9,7 @@ boolean estaSaltando = false;
 
 float yPersonaje;         // posición vertical del personaje
 float yiPersonaje= 0;     // posición vertical inicial del personaje
+float VyPersonaje= 0;
 float VyiPersonaje = 0;   // velocidad vertical inicial del personaje 
 float AyPersonaje = 0;    // aceleración vertical del personaje
 float tPersonaje =0;      // tiempo de la animación del personaj
@@ -16,7 +17,8 @@ float tPersonaje =0;      // tiempo de la animación del personaj
 float txPersonaje = 0;
 float xiPersonaje = 0;
 float xPersonaje = 0;
-float VxiPersonaje = 0;
+float VxPersonaje = 0;
+float VxiPersonaje = 5;
 boolean esEmpujado = false;
 
 void setupPersonaje(){
@@ -24,10 +26,14 @@ void setupPersonaje(){
   yPersonaje = yiPersonaje;  
 }
 
-void empujePersonaje(){
+void empujePersonaje(char sentido){
   if (esEmpujado == false) {
     esEmpujado = true;
-    VxiPersonaje = 5;
+    if (sentido == 'd') {
+      VxPersonaje = VxiPersonaje;      
+    } else {
+      VxPersonaje = -VxiPersonaje;
+    }    
     txPersonaje = 0;
     
   }  
@@ -58,6 +64,7 @@ void dibujarPantallaGame(){
     // Cálculo del tiempo para animar el salto
     tPersonaje = tPersonaje + 1;
     // Cálculo de la posición vertical durante el salto
+    VyPesonaje = VyiPersonaje + AyPersonaje*tPersonaje;
     yPersonaje = yiPersonaje + VyiPersonaje * tPersonaje + 0.5*AyPersonaje*tPersonaje*tPersonaje;
     // Controla cuando el personaje vuelve al suelo y termina el salto
     if (yPersonaje > height -40-alturaPersonaje) {
@@ -66,7 +73,7 @@ void dibujarPantallaGame(){
       tPersonaje = 0;
       VyiPersonaje = 0;
       AyPersonaje = 0;
-      VxiPersonaje = 0;
+      VxPersonaje = 0;
       esEmpujado = false;
       xiPersonaje = xPersonaje;
     }
@@ -77,19 +84,25 @@ void dibujarPantallaGame(){
   }
   
   // cálculos para el movimiento horizontal
-  xPersonaje = xiPersonaje + VxiPersonaje * txPersonaje;
+  xPersonaje = xiPersonaje + VxPersonaje * txPersonaje;
   
   // Control de choque con la pared izquierda
   if (xPersonaje + anchoPersonaje > width){
-    VxiPersonaje = - VxiPersonaje;
-    VyiPersonaje = VyiPersonaje +  0.1 * VyiPersonaje;
+    VxPersonaje = - VxPersonaje;
+    if (VyPersonaje > 0){
+      VyiPersonaje = - VyiPersonaje;
+    }
+    //VyiPersonaje = VyiPersonaje +  0.05 * VyiPersonaje;
     xiPersonaje = width - anchoPersonaje;
     txPersonaje = 0;
   }
   // Control de choque con la pared derecha
   if (xPersonaje < 0){
-    VxiPersonaje = - VxiPersonaje;
-    VyiPersonaje = VyiPersonaje +  0.1 * VyiPersonaje;
+    VxPersonaje = - VxPersonaje;
+    if (VyPersonaje > 0){
+      VyiPersonaje = - VyiPersonaje;
+    }
+    //VyiPersonaje = VyiPersonaje +  0.01 * VyiPersonaje;
     xiPersonaje = 0;
     txPersonaje = 0;
   }

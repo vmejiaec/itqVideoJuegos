@@ -1,8 +1,12 @@
 void keyPressed(){
   switch(key){
+    case 'A':
+    case 'a':
+      empujePersonaje('a');
+      break;
     case 'D':
     case 'd':
-      empujePersonaje(); 
+      empujePersonaje('d');
       break;
     case 'W':
     case 'w':
