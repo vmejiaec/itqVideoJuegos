@@ -23,6 +23,9 @@ boolean esEmpujado = false;
 
 PImage[] imgPer = new PImage[5];
 
+  // Control del alterno dibujo de la animación de la caminata
+  int alternarPaso = 0;
+
 void CargarImagenesPersonaje(){
   imgPer[0] = loadImage("./img/Aper01.png");
   imgPer[1] = loadImage("./img/Aper02CamIzq.png");
@@ -122,12 +125,13 @@ void dibujarPantallaGame(){
   // Dibujar el personaje
   //rect(xPersonaje, yPersonaje, anchoPersonaje, alturaPersonaje);
   
+  // Calcular el sentido del movimiento del personaje
   char sentido = 'i';  // por defecto a la izquierda
-  
   if (VxPersonaje > 0) {
     sentido = 'd';
   } 
-   
+
+  // Animación del personaje mediante las imágenes
   if (estaSaltando){
     if (VyPersonaje < 0) {
       //image(imgPer[3],xPersonaje, yPersonaje);
@@ -141,7 +145,16 @@ void dibujarPantallaGame(){
       //image(imgPer[0],xPersonaje, yPersonaje);    
       flipImageH(imgPer[0],xPersonaje, yPersonaje, sentido);
     } else {
+      // Calcula el paso alternado
       if (txPersonaje % 4 == 0){
+        if (alternarPaso == 0) {
+          alternarPaso = 1;
+        } else {
+          alternarPaso = 0;
+        }
+      }
+      // Dibuja la imagen que le toca
+      if (alternarPaso == 0){
         //image(imgPer[1],xPersonaje, yPersonaje);
         flipImageH(imgPer[1],xPersonaje, yPersonaje, sentido);
       } else {
