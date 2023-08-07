@@ -23,10 +23,10 @@ boolean esEmpujado = false;
 
 PImage[] imgPer = new PImage[5];
 
-  // Control del alterno dibujo de la animación de la caminata
-  int alternarPaso = 0;
+// Control del alterno dibujo de la animación de la caminata
+int alternarPaso = 0;
 
-void CargarImagenesPersonaje(){
+void cargarImagenesPersonaje(){
   imgPer[0] = loadImage("./img/Aper01.png");
   imgPer[1] = loadImage("./img/Aper02CamIzq.png");
   imgPer[2] = loadImage("./img/Aper04CamIzq.png");
@@ -47,8 +47,7 @@ void empujePersonaje(char sentido){
     } else {
       VxPersonaje = -VxiPersonaje;
     }    
-    txPersonaje = 0;
-    
+    txPersonaje = 0;    
   }  
 }
 
@@ -71,7 +70,7 @@ void dibujarPantallaGame(){
   nube = loadImage("img/Nube1.png");  
   tNube = tNube + 1;
   xNube = xInicioNube + VxNube * tNube;  
-  image(nube,xNube,100);  
+  image(nube,xNube,400);  
   // Cálculos para la animación del salto
   if (estaSaltando == true){
     // Cálculo del tiempo para animar el salto
@@ -139,30 +138,38 @@ void dibujarPantallaGame(){
       flipImageH(imgPer[4],xPersonaje, yPersonaje, sentido);
     }        
   } else{
-    if (VxPersonaje == 0) {
+    if (VxPersonaje == 0) {  // Está quieto idle
       flipImageH(imgPer[0],xPersonaje, yPersonaje, sentido);
     } else {
       // Calcula el paso alternado
-      if (txPersonaje % 4 == 0){
+      if (txPersonaje % 5 == 0){
         alternarPaso++;
         alternarPaso = alternarPaso % 2;
       }
       // Dibuja la imagen que le toca
-      if (alternarPaso == 0){
-        flipImageH(imgPer[1],xPersonaje, yPersonaje, sentido);
-      } else {
-        flipImageH(imgPer[2],xPersonaje, yPersonaje, sentido);
+      switch(alternarPaso){
+        case 0: // primer paso
+          flipImageH(imgPer[1],xPersonaje, yPersonaje, sentido);
+          break;
+        case 1: // segundo paso
+          flipImageH(imgPer[2],xPersonaje, yPersonaje, sentido);
+          break;  
       }
     }      
   }  
 
+  // dibujar a los enemigos en el juego
+  dibujarEnemigos();
+
   // Coloca texto en la pantalla
   // Publico las variables del personaje
+  /*
   fill(0);
   textSize(20);
   text("yP: "+yPersonaje, 100,100);
   text("VyP: "+VyPersonaje, 100,140);
   text("VyiP: "+VyiPersonaje, 100,180);
+  */
   // Menú del juego
   fill(155);
   textSize(30);
@@ -170,13 +177,14 @@ void dibujarPantallaGame(){
   fill(255);
 }
 
+// Cambia la imagen a su reflejo especular 
 void flipImageH(PImage img, float X, float Y, int sentido) {
   // sentido = 'd' derecha, sentido = 'i' izquierda
   pushMatrix();
   if (sentido == 'i'){
     image(img, X, Y);
   } else {
-    scale(-1, 1);
+    scale(-1, 1); // cambia la orientación de las coordenadas de la pantalla
     image(img, -X- img.width, Y);
   }
   popMatrix();

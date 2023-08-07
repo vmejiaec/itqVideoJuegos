@@ -22,6 +22,7 @@ void keyPressed(){
     case  'g':
       if(estado == 'r') {
         estado = 'g';
+        setupEnemigos();
       }
       break;
     case  'E':
